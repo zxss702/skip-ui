@@ -59,9 +59,9 @@ import androidx.compose.ui.platform.LocalLayoutDirection
                 rootModifier = rootModifier.imePadding()
             }
             rootModifier = rootModifier.background(Color.background.colorImpl())
-                .onGloballyPositionedInWindow {
-                    presentationBounds.value = $0
-                }
+                // .onGloballyPositionedInWindow {
+                //     presentationBounds.value = $0
+                // }
             Box(modifier: rootModifier) {
                 // guard presentationBounds.value != Rect.Zero else {
                 //     return
