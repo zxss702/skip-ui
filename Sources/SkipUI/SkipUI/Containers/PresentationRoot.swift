@@ -55,9 +55,9 @@ import androidx.compose.ui.platform.LocalLayoutDirection
             if systemBarEdges.contains(.trailing) {
                 rootModifier = rootModifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.End))
             }
-            // if systemBarEdges.contains(.bottom) {
-            //     rootModifier = rootModifier.imePadding()
-            // }
+            if systemBarEdges.contains(.bottom) {
+                rootModifier = rootModifier.imePadding()
+            }
             rootModifier = rootModifier.background(Color.background.colorImpl())
                 .onGloballyPositionedInWindow {
                     presentationBounds.value = $0
@@ -85,8 +85,8 @@ import androidx.compose.ui.platform.LocalLayoutDirection
                         $0.set_isEdgeToEdge(safeBounds != presentationBounds.value)
                     }
                     $0.set_safeArea(safeArea)
-                } in: {
-                    Box(modifier: Modifier.fillMaxSize().padding(safeArea), contentAlignment = androidx.compose.ui.Alignment.Center) {
+                } in: { //.padding(safeArea)
+                    Box(modifier: Modifier.fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.Center) {
                         content(context)
                     }
                 }
