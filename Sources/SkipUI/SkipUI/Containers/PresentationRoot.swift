@@ -55,17 +55,17 @@ import androidx.compose.ui.platform.LocalLayoutDirection
             if systemBarEdges.contains(.trailing) {
                 rootModifier = rootModifier.windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.End))
             }
-            if systemBarEdges.contains(.bottom) {
-                rootModifier = rootModifier.imePadding()
-            }
+            // if systemBarEdges.contains(.bottom) {
+            //     rootModifier = rootModifier.imePadding()
+            // }
             rootModifier = rootModifier.background(Color.background.colorImpl())
-                // .onGloballyPositionedInWindow {
-                //     presentationBounds.value = $0
-                // }
-            Box(modifier: rootModifier) {
-                guard presentationBounds.value != Rect.Zero else {
-                    return
+                .onGloballyPositionedInWindow {
+                    presentationBounds.value = $0
                 }
+            Box(modifier: rootModifier) {
+                // guard presentationBounds.value != Rect.Zero else {
+                //     return
+                // }
                 // Cannot get accurate WindowInsets until we're in the content box. We only check top and bottom
                 // because we've padded the content to within horizontal safe insets already, mirroring standard
                 // Android app behavior like e.g. Settings
