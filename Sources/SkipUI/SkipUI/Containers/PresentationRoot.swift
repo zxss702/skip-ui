@@ -59,9 +59,9 @@ import androidx.compose.ui.platform.LocalLayoutDirection
                 rootModifier = rootModifier.imePadding()
             }
             rootModifier = rootModifier.background(Color.background.colorImpl())
-                // .onGloballyPositionedInWindow {
-                //     presentationBounds.value = $0
-                // }
+                .onGloballyPositionedInWindow {
+                    presentationBounds.value = $0
+                }
             Box(modifier: rootModifier) {
                 // guard presentationBounds.value != Rect.Zero else {
                 //     return
@@ -85,8 +85,8 @@ import androidx.compose.ui.platform.LocalLayoutDirection
                         $0.set_isEdgeToEdge(safeBounds != presentationBounds.value)
                     }
                     $0.set_safeArea(safeArea)
-                } in: { //.padding(safeArea)
-                    Box(modifier: Modifier.fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.Center) {
+                } in: {
+                    Box(modifier: Modifier.fillMaxSize().padding(safeArea), contentAlignment = androidx.compose.ui.Alignment.Center) {
                         content(context)
                     }
                 }
@@ -111,6 +111,19 @@ import androidx.compose.ui.platform.LocalLayoutDirection
     }
     if let activity {
         UIApplication.launch(activity)
+    }
+}
+
+/// The root of a presentation, such as the root presentation or a sheet.
+// SKIP INSERT: @OptIn(ExperimentalLayoutApi::class)
+@Composable public func PresentationRoot2(defaultColorScheme: ColorScheme? = nil, context: ComposeContext, content: @Composable (ComposeContext) -> Void) {
+    let preferredColorScheme = rememberSaveable(stateSaver: context.stateSaver as! Saver<Preference<PreferredColorScheme>, Any>) { mutableStateOf(Preference<PreferredColorScheme>(key: PreferredColorSchemePreferenceKey.self)) }
+    let preferredColorSchemeCollector = PreferenceCollector<PreferredColorScheme>(key: PreferredColorSchemePreferenceKey.self, state: preferredColorScheme)
+    PreferenceValues.shared.collectPreferences([preferredColorSchemeCollector]) {
+        let materialColorScheme = preferredColorScheme.value.reduced.colorScheme?.asMaterialTheme() ?? defaultColorScheme?.asMaterialTheme() ?? MaterialTheme.colorScheme
+        MaterialTheme(colorScheme: materialColorScheme) {
+            content(context)
+        }
     }
 }
 
